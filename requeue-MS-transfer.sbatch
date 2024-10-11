@@ -3,7 +3,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=50GB
-#SBATCH --job-name=transfer_MS_123456789
+#SBATCH --job-name=transfer_MS_0123456789
 #SBATCH --output=logs/%x-%j.out
 #SBATCH --error=logs/%x-%j.err
 #SBATCH --partition=Main

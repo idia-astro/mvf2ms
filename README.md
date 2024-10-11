@@ -22,7 +22,7 @@ Finally, using CBID 1680420378, a full example with the RDB link and its token (
 
     ./requeue-MS-transfer.sh https://archive-gw-1.kat.ac.za/1680420378/1680420378_sdp_l0.full.rdb?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJpc3MiOiJrYXQtYXJjaGl2ZS5rYXQuYWMuemEiLCJhdWQiOiJhcmNoaXZlLWd3LTEua2F0LmFjLnphIiwiaWF0IjoxNzA2MTU0ODMzLCJwcmVmaXgiOlsiMTY4MDQyMDM3OCJdLCJleHAiOjE3MDY3NTk2MzMsInN1YiI6ImpvcmRhbkBpZGlhLmFjLnphIiwic2NvcGVzIjpbInJlYWQiXX0.iGZuC2RAga8acD0i5cYZCN_6FsOc5vKn9I7uqMjH2Ezn5emtZoB9tkhyyFUzhrpMFBD7BdtYXfUz_wR4g78oEw -f --flags=cam,data_lost -a --chanbin=8 --quack=1
 
-Upon launching the script, the SLURM job name will be updated to `transfer_MS_${CBID}`, a confirmation of the job launching will be output, displaying the CBID, and the email provided in the sbatch header will be emailed when the job starts, ends, fails, and/or hits the 80% time limit (`BEGIN,END,FAIL,TIME_LIMIT_80`).
+Ensure to update your email and the path to the virtual env where you've installed katdal in the requeue-MS-transfer.sbatch file. Upon launching the script, the SLURM job name will be updated to `transfer_MS_${CBID}`, a confirmation of the job launching will be output, displaying the CBID, and the email provided in the sbatch header will be emailed when the job starts, ends, fails, and/or hits the 80% time limit (`BEGIN,END,FAIL,TIME_LIMIT_80`).
 
 # Known issues
 
