@@ -1,14 +1,15 @@
 # Background
 
-This repository contains an MS pulling workflow that uses the SLURM requeue functionality to continually attempt to pull MS data from the SARAO archive via katdal's `mvftoms.py` script. Katdal introduced new functionality with version 0.20.1 to resume the pulling of MS data from a previously incomplete transfer, by taking the last written dump, removing it, and continuing from there. Katdal also introduced additional features to improve the stablility of remote transfers (see issue [here](https://github.com/ska-sa/katdal/issues/362) and pull request [here](https://github.com/ska-sa/katdal/pull/363)). Known issues with this approach are listed below.
-
-# Installing software dependencies
+This repository contains the `rclone-url-copy.py` scripy to download data from the SARAO archive using the download link, and an MS pulling workflow that uses the SLURM requeue functionality to continually attempt to pull MS data from the SARAO archive via katdal's `mvftoms.py` script. 
+# Using MVFTOMS Download
+Katdal introduced new functionality with version 0.20.1 to resume the pulling of MS data from a previously incomplete transfer, by taking the last written dump, removing it, and continuing from there. Katdal also introduced additional features to improve the stablility of remote transfers (see issue [here](https://github.com/ska-sa/katdal/issues/362) and pull request [here](https://github.com/ska-sa/katdal/pull/363)). Known issues with this approach are listed below.
+## Installing software dependencies
 
 This workflow requires katdal as a software dependency, which can simply be installed following the instructions documented [here](https://docs.google.com/document/d/1Na1Tq6AUHwESaucmG0qcaBAPUcif8637_p4Zah4WU6s/edit#heading=h.lhu2yo6xjrdn). It also requires the `requeue-MS-transfer.sbatch` and `check_data.py` scripts to be in your working directory.
 
 _The script basically relies on `check_data.py` crashing when the MS is incomplete, which only really checks the metadata with CASA's msmd tool. However, msmd is very good at crashing when the MS isn’t intact due to all the data integrity checks it does up-front._
 
-# Running the software
+## Running the software
 
 The workflow is run by passing in an RDB link, which is copied to your clipboard when clicking the very left hand icon on the [SARAO archive](https://archive.sarao.ac.za) for the CBID of interest (only shown when data is on disk and not tape), which will be labelled as "32KW", "4KW", "UHF", or similar, like so:
 
@@ -24,6 +25,29 @@ Finally, using CBID 1680420378, a full example with the RDB link and its token (
 
 Ensure to update your email (line 11) and the path to the virtual env where you've installed katdal (line 22) in the `requeue-MS-transfer.sbatch` file. Upon launching the script, the SLURM job name will be updated to `transfer_MS_${CBID}`, a confirmation of the job launching will be output, displaying the CBID, and the email provided in the sbatch header will be emailed when the job starts, ends, fails, and/or hits the 80% time limit (`BEGIN,END,FAIL,TIME_LIMIT_80`).
 
-# Known issues
+## Known issues
 
 If the workflow is interrupted, such as timing out, running out of memory, or crashing, it usually leaves the MS in a corrupt state, and any attempts to resume the transfer with katdal with fail. This is as opposed to katdal experiencing a connection issue, and although these are uncommon since the improvements mentioned above, katdal can still resume a transfer following such an error. Some more information and possible future katdal development to get around leaving the MS in a corrupted state is listed [here](https://github.com/ska-sa/katdal/issues/362#issuecomment-1411852385).
+
+# Using Rclone Script
+This is a python script that utilise [rclone](https://rclone.org/) to copy data from the SARAO Archive to your present working directoty.
+
+To start your download you first need to generate the download url/ link from the achive, which is in the form: 
+```bash
+https://preview.archive.sarao.ac.za/s3/1720153777-dataexport//1720153777_sdp_l0.ms.tar.gz?token=eyJhbGciOi... 
+```
+
+Script usage:
+```bash 
+python rclone-url-copy.py --url download-link
+```
+
+Example:
+
+```bash
+python rclone_copy.py --url https://preview.archive.sarao.ac.za/s3/1720153777-dataexport//1720153777_sdp_l0.ms.tar.gz?token=eyJhbGciOi...
+```
+
+Output:
+MS - Measurement set in the form `1720153777_sdp_l0.ms.tar.gz`
+
