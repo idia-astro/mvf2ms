@@ -49,5 +49,5 @@ python rclone_copy.py --url https://preview.archive.sarao.ac.za/s3/1720153777-da
 ```
 
 Output:
-MS - Measurement set in the form `1720153777_sdp_l0.ms.tar.gz`
+MS - Measurement Set in the form `1720153777_sdp_l0.ms.tar.gz`
 
